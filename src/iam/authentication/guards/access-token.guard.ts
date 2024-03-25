@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import jwtConfig from '../config/jwt.config';
+import jwtConfig from '../../config/jwt.config';
 import { Request } from 'express';
-import { REQUEST_USER_KEY } from '../iam.constants';
+import { REQUEST_USER_KEY } from '../../iam.constants';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -17,7 +17,8 @@ export class AccessTokenGuard implements CanActivate {
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
-  ) {}
+  ) {
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // 💡 NOTE: For GraphQL applications, you’d have to use the
@@ -40,7 +41,7 @@ export class AccessTokenGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [, token] = request.headers.authorization?.split(' ') ?? [];
-    return token;
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }

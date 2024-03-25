@@ -9,9 +9,9 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot(),
-    // CoffeesModule,
-    // UsersModule,
+    ConfigModule.forRoot(),
+    CoffeesModule,
+    UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -22,7 +22,7 @@ import { ConfigModule } from '@nestjs/config';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    // IamModule,
+    IamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
